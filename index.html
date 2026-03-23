@@ -2,11 +2,10 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Для тебе</title>
+    <title>Тобі сюрприз!</title>
     <style>
         body {
-            /* Більш насичений рожевий фон */
-            background-color: #FFC0CB; 
+            background-color: #FFC0CB; /* Рожевий фон */
             margin: 0;
             display: flex;
             justify-content: center;
@@ -14,76 +13,112 @@
             height: 100vh;
             overflow: hidden;
             position: relative;
+            font-family: "Times New Roman", Times, serif;
         }
-        
-        /* Біле віконце з текстом */
+
+        /* Стиль для віконець */
         .modal {
             background-color: white;
-            padding: 30px 50px;
+            padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             z-index: 10;
-            
-            font-family: "Times New Roman", Times, serif;
-            font-size: 14pt;
-            color: #333;
             text-align: center;
+            position: absolute;
+        }
+
+        .btn-ok {
+            margin-top: 15px;
+            padding: 5px 20px;
+            cursor: pointer;
+            background: #FFC0CB;
+            border: 1px solid #d8a4af;
+            border-radius: 5px;
+        }
+
+        /* Листівка, що вилітає з кута */
+        #card {
+            display: none; /* Спочатку схована */
+            bottom: -200px;
+            right: -200px;
+            background: #fff;
+            border: 2px solid #ff0000;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 1s ease-out;
+            z-index: 11;
+        }
+
+        /* Клас для анімації вильоту */
+        .fly-in {
+            display: block !important;
+            bottom: 50px !important;
+            right: 50px !important;
+        }
+
+        /* Котик */
+        #cat-img {
+            display: none;
+            max-width: 250px;
+            margin-top: 15px;
+            border-radius: 10px;
         }
 
         /* Червоні сердечка */
         .heart {
             position: absolute;
             bottom: -50px;
-            color: #FF0000; /* Яскраво-червоний колір */
+            color: #FF0000;
             font-size: 20px;
             user-select: none;
             animation: moveUp 6s linear infinite;
             opacity: 0.8;
-            pointer-events: none; /* Щоб сердечка не заважали натискати на екран */
+            pointer-events: none;
         }
 
         @keyframes moveUp {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0.9;
-            }
-            100% {
-                transform: translateY(-115vh) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.9; }
+            100% { transform: translateY(-115vh) rotate(360deg); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="modal">
-        Не скучай
+    <div id="step1" class="modal">
+        <div style="font-size: 14pt;">Не скучай</div>
+        <button class="btn-ok" onclick="showCard()">ОК</button>
+    </div>
+
+    <div id="card" class="modal" onclick="showCat()">
+        <div style="font-size: 14pt;">Натисни на мене</div>
+        <img id="cat-img" src="https://cataas.com/cat/cute" alt="Котик">
     </div>
 
     <script>
+        // Функція для показу листівки
+        function showCard() {
+            document.getElementById('step1').style.display = 'none';
+            const card = document.getElementById('card');
+            card.classList.add('fly-in');
+        }
+
+        // Функція для показу котика
+        function showCat() {
+            document.getElementById('cat-img').style.display = 'block';
+            document.querySelector('#card div').innerText = 'Мур!';
+        }
+
+        // Генерація сердечок
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.innerHTML = '❤'; 
-            
-            // Випадкова позиція по всій ширині екрану
             heart.style.left = Math.random() * 100 + "vw";
-            
-            // Випадкова швидкість польоту
             heart.style.animationDuration = Math.random() * 3 + 4 + "s";
-            
-            // Випадковий розмір сердечок
             heart.style.fontSize = Math.random() * 15 + 15 + "px";
-            
             document.body.appendChild(heart);
-            
-            // Видаляємо сердечко через 7 секунд
-            setTimeout(() => {
-                heart.remove();
-            }, 7000);
+            setTimeout(() => { heart.remove(); }, 7000);
         }
-
-        // Створювати сердечко кожні 600 мілісекунд (трішки частіше)
         setInterval(createHeart, 600);
     </script>
 
