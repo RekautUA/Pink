@@ -5,24 +5,24 @@
     <title>Для тебе</title>
     <style>
         body {
-            /* Світло-рожевий фон */
-            background-color: #FFF0F5; 
+            /* Більш насичений рожевий фон */
+            background-color: #FFC0CB; 
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            overflow: hidden; /* Щоб сердечка не створювали прокрутку */
+            overflow: hidden;
             position: relative;
         }
         
-        /* Біле віконце по центру */
+        /* Біле віконце з текстом */
         .modal {
             background-color: white;
             padding: 30px 50px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            z-index: 10; /* Щоб віконце було поверх сердечок */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            z-index: 10;
             
             font-family: "Times New Roman", Times, serif;
             font-size: 14pt;
@@ -30,25 +30,25 @@
             text-align: center;
         }
 
-        /* Стиль для сердечок */
+        /* Червоні сердечка */
         .heart {
             position: absolute;
             bottom: -50px;
-            color: #FFB6C1; /* Колір сердечок */
+            color: #FF0000; /* Яскраво-червоний колір */
             font-size: 20px;
             user-select: none;
             animation: moveUp 6s linear infinite;
-            opacity: 0.7;
+            opacity: 0.8;
+            pointer-events: none; /* Щоб сердечка не заважали натискати на екран */
         }
 
-        /* Анімація підйому вгору */
         @keyframes moveUp {
             0% {
                 transform: translateY(0) rotate(0deg);
-                opacity: 1;
+                opacity: 0.9;
             }
             100% {
-                transform: translateY(-110vh) rotate(360deg);
+                transform: translateY(-115vh) rotate(360deg);
                 opacity: 0;
             }
         }
@@ -64,27 +64,27 @@
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
-            heart.innerHTML = '❤'; // Символ сердечка
+            heart.innerHTML = '❤'; 
             
-            // Випадкова позиція по горизонталі
+            // Випадкова позиція по всій ширині екрану
             heart.style.left = Math.random() * 100 + "vw";
             
-            // Випадкова тривалість польоту (від 4 до 8 секунд)
-            heart.style.animationDuration = Math.random() * 3 + 5 + "s";
+            // Випадкова швидкість польоту
+            heart.style.animationDuration = Math.random() * 3 + 4 + "s";
             
-            // Випадковий розмір
+            // Випадковий розмір сердечок
             heart.style.fontSize = Math.random() * 15 + 15 + "px";
             
             document.body.appendChild(heart);
             
-            // Видаляємо сердечко після завершення анімації
+            // Видаляємо сердечко через 7 секунд
             setTimeout(() => {
                 heart.remove();
-            }, 8000);
+            }, 7000);
         }
 
-        // Створювати нове сердечко кожні 800 мілісекунд
-        setInterval(createHeart, 800);
+        // Створювати сердечко кожні 600 мілісекунд (трішки частіше)
+        setInterval(createHeart, 600);
     </script>
 
 </body>
