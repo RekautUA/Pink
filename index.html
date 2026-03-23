@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Тобі сюрприз!</title>
+    <title>Тобі послання!</title>
     <style>
         body {
             background-color: #FFC0CB; /* Рожевий фон */
@@ -24,7 +24,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             z-index: 100;
             text-align: center;
-            display: block;
         }
 
         .btn-ok {
@@ -36,58 +35,75 @@
             border: none;
             border-radius: 20px;
             font-size: 14pt;
+            transition: 0.3s;
         }
+        .btn-ok:hover { transform: scale(1.1); }
 
-        /* Літачок */
+        /* Паперовий літачок */
         #plane {
             display: none;
             position: absolute;
-            font-size: 60px;
+            font-size: 50px;
             z-index: 150;
+            pointer-events: none;
         }
 
+        /* Анімація польоту літачка */
         .fly-animation {
             display: block !important;
             animation: flyIn 2s ease-in-out forwards;
         }
 
         @keyframes flyIn {
-            0% { bottom: -100px; right: -100px; transform: rotate(0deg) scale(1); }
-            50% { bottom: 50%; right: 50%; transform: rotate(-45deg) scale(1.5); }
-            100% { bottom: 50%; right: 50%; transform: rotate(-720deg) scale(0); opacity: 0; }
+            0% { 
+                bottom: -50px; 
+                right: -50px; 
+                transform: rotate(0deg) scale(1); 
+            }
+            100% { 
+                bottom: 50%; 
+                right: 50%; 
+                /* Літачок підлітає до центру і нахиляється */
+                transform: translate(50%, 50%) rotate(-45deg) scale(1.5);
+                opacity: 0;
+            }
         }
 
-        /* Аркуш паперу з котиком */
+        /* Аркуш паперу (листівка) */
         #paper-card {
             display: none;
             background: white;
             padding: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             z-index: 50;
             text-align: center;
             width: 280px;
-            border-radius: 5px;
+            border-radius: 2px;
+            position: absolute;
+            transform: scale(0);
         }
 
-        .appear-paper {
+        /* Анімація розгортання паперу */
+        .unfold-animation {
             display: block !important;
-            animation: showPaper 0.8s ease-out 1.8s forwards;
+            animation: unfold 0.6s ease-out 1.9s forwards;
         }
 
-        @keyframes showPaper {
-            0% { transform: scale(0) rotate(20deg); opacity: 0; }
+        @keyframes unfold {
+            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
             100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
 
         #cat-img { width: 100%; border-radius: 5px; margin-top: 10px; }
 
-        /* Сердечка */
+        /* Червоні сердечка */
         .heart {
             position: absolute;
             bottom: -50px;
             color: red;
             font-size: 20px;
             animation: moveUp 5s linear infinite;
+            z-index: 1;
         }
 
         @keyframes moveUp {
@@ -100,23 +116,31 @@
 
     <div id="step1">
         <div style="font-size: 18pt;">Не скучай</div>
-        <button class="btn-ok" onclick="start()">ОК</button>
+        <button class="btn-ok" onclick="launch()">ОК</button>
     </div>
 
     <div id="plane">✈️</div>
 
     <div id="paper-card">
-        <div style="font-size: 16pt;">Мур!</div>
+        <div style="font-size: 16pt; font-weight: bold;">Привіт!</div>
         <img id="cat-img" src="https://cataas.com/cat/cute" alt="Котик">
     </div>
 
     <script>
-        function start() {
+        function launch() {
+            // Прибираємо вікно "Не скучай"
             document.getElementById('step1').style.display = 'none';
-            document.getElementById('plane').classList.add('fly-animation');
-            document.getElementById('paper-card').classList.add('appear-paper');
+            
+            // Запускаємо літачок
+            const plane = document.getElementById('plane');
+            plane.classList.add('fly-animation');
+            
+            // Запускаємо появу паперу (вона почнеться через 1.9 сек)
+            const paper = document.getElementById('paper-card');
+            paper.classList.add('unfold-animation');
         }
 
+        // Функція для сердечок
         function createHeart() {
             const heart = document.createElement('div');
             heart.className = 'heart';
