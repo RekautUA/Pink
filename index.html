@@ -2,8 +2,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тобі літачок!</title>
+    <title>Тобі сюрприз!</title>
     <style>
         body {
             background-color: #FFC0CB; /* Рожевий фон */
@@ -17,67 +16,117 @@
             font-family: "Times New Roman", Times, serif;
         }
 
-        /* Стиль для першого вікна */
-        .modal {
+        /* Початкове вікно */
+        #step1 {
             background-color: white;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            z-index: 10;
+            z-index: 100;
             text-align: center;
-            transition: opacity 0.5s;
+            display: block;
         }
 
         .btn-ok {
             margin-top: 15px;
-            padding: 8px 25px;
+            padding: 10px 30px;
             cursor: pointer;
-            background: #FF99AA;
+            background: #FF0000;
             color: white;
             border: none;
             border-radius: 20px;
-            font-size: 12pt;
-            font-weight: bold;
-            transition: background 0.3s;
+            font-size: 14pt;
         }
-        .btn-ok:hover { background: #FF7788; }
 
-        /* Паперовий літачок (спочатку схований за межами екрану) */
+        /* Літачок */
         #plane {
             display: none;
             position: absolute;
-            font-size: 50px; /* Розмір літачка */
-            color: white;
-            z-index: 20;
-            transform: rotate(0deg);
+            font-size: 60px;
+            z-index: 150;
         }
 
-        /* Клас для анімації польоту літачка */
         .fly-animation {
             display: block !important;
-            animation: flyIn 2.5s ease-out forwards;
+            animation: flyIn 2s ease-in-out forwards;
         }
 
-        /* Анімація польоту з кута в центр + перетворення */
         @keyframes flyIn {
-            0% {
-                bottom: -100px;
-                right: -100px;
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
-            }
-            70% {
-                /* Долітає до центру */
-                bottom: calc(50% - 25px);
-                right: calc(50% - 25px);
-                transform: scale(1) rotate(-45deg);
-                opacity: 1;
-            }
-            85% {
-                /* Починає "розгортатися" (крутитися і збільшуватися) */
-                bottom: calc(50% - 25px);
-                right: calc(50% - 25px);
-                transform: scale(2) rotate(180deg);
-                opacity: 0.5;
-            }
-            10
+            0% { bottom: -100px; right: -100px; transform: rotate(0deg) scale(1); }
+            50% { bottom: 50%; right: 50%; transform: rotate(-45deg) scale(1.5); }
+            100% { bottom: 50%; right: 50%; transform: rotate(-720deg) scale(0); opacity: 0; }
+        }
+
+        /* Аркуш паперу з котиком */
+        #paper-card {
+            display: none;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 50;
+            text-align: center;
+            width: 280px;
+            border-radius: 5px;
+        }
+
+        .appear-paper {
+            display: block !important;
+            animation: showPaper 0.8s ease-out 1.8s forwards;
+        }
+
+        @keyframes showPaper {
+            0% { transform: scale(0) rotate(20deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        #cat-img { width: 100%; border-radius: 5px; margin-top: 10px; }
+
+        /* Сердечка */
+        .heart {
+            position: absolute;
+            bottom: -50px;
+            color: red;
+            font-size: 20px;
+            animation: moveUp 5s linear infinite;
+        }
+
+        @keyframes moveUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-110vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="step1">
+        <div style="font-size: 18pt;">Не скучай</div>
+        <button class="btn-ok" onclick="start()">ОК</button>
+    </div>
+
+    <div id="plane">✈️</div>
+
+    <div id="paper-card">
+        <div style="font-size: 16pt;">Мур!</div>
+        <img id="cat-img" src="https://cataas.com/cat/cute" alt="Котик">
+    </div>
+
+    <script>
+        function start() {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('plane').classList.add('fly-animation');
+            document.getElementById('paper-card').classList.add('appear-paper');
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤';
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 400);
+    </script>
+</body>
+</html>
