@@ -24,6 +24,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             z-index: 100;
             text-align: center;
+            transition: opacity 0.5s;
         }
 
         .btn-ok {
@@ -39,59 +40,45 @@
         }
         .btn-ok:hover { transform: scale(1.1); }
 
-        /* Паперовий літачок */
-        #plane {
-            display: none;
+        /* Анімація польоту та розгортання (GIF) */
+        #plane-gif {
+            display: none; /* Спочатку сховано */
             position: absolute;
-            font-size: 50px;
-            z-index: 150;
+            z-index: 50;
+            /* Розміщуємо по центру */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px; /* Розмір анімації */
+            height: auto;
             pointer-events: none;
         }
 
-        /* Анімація польоту літачка */
-        .fly-animation {
-            display: block !important;
-            animation: flyIn 2s ease-in-out forwards;
-        }
-
-        @keyframes flyIn {
-            0% { 
-                bottom: -50px; 
-                right: -50px; 
-                transform: rotate(0deg) scale(1); 
-            }
-            100% { 
-                bottom: 50%; 
-                right: 50%; 
-                /* Літачок підлітає до центру і нахиляється */
-                transform: translate(50%, 50%) rotate(-45deg) scale(1.5);
-                opacity: 0;
-            }
-        }
-
-        /* Аркуш паперу (листівка) */
+        /* Аркуш паперу (листівка з котиком) */
         #paper-card {
-            display: none;
+            display: none; /* Спочатку сховано */
             background: white;
             padding: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            z-index: 50;
+            z-index: 40;
             text-align: center;
             width: 280px;
-            border-radius: 2px;
+            border-radius: 2px; /* Гострі кути, як у паперу */
             position: absolute;
-            transform: scale(0);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
         }
 
-        /* Анімація розгортання паперу */
-        .unfold-animation {
+        /* Клас для появи паперу після анімації */
+        .show-paper {
             display: block !important;
-            animation: unfold 0.6s ease-out 1.9s forwards;
+            animation: finalAppear 0.5s ease-out forwards;
         }
 
-        @keyframes unfold {
-            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        @keyframes finalAppear {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
         #cat-img { width: 100%; border-radius: 5px; margin-top: 10px; }
@@ -116,28 +103,36 @@
 
     <div id="step1">
         <div style="font-size: 18pt;">Не скучай</div>
-        <button class="btn-ok" onclick="launch()">ОК</button>
+        <button class="btn-ok" onclick="launchSequence()">ОК</button>
     </div>
 
-    <div id="plane">✈️</div>
+    <img id="plane-gif" src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3VxdXAzbnU3YzU2azR6bm92N3d5NHJnbHR6d3V3azdzbnk4czByaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/X83Lw42c54t1nwnb8L/giphy.gif" alt="Літачок летить">
 
     <div id="paper-card">
-        <div style="font-size: 16pt; font-weight: bold;">Привіт!</div>
+        <div style="font-size: 16pt; font-weight: bold;">Мур!</div>
         <img id="cat-img" src="https://cataas.com/cat/cute" alt="Котик">
     </div>
 
     <script>
-        function launch() {
-            // Прибираємо вікно "Не скучай"
-            document.getElementById('step1').style.display = 'none';
-            
-            // Запускаємо літачок
-            const plane = document.getElementById('plane');
-            plane.classList.add('fly-animation');
-            
-            // Запускаємо появу паперу (вона почнеться через 1.9 сек)
-            const paper = document.getElementById('paper-card');
-            paper.classList.add('unfold-animation');
+        function launchSequence() {
+            // 1. Ховаємо перше вікно
+            document.getElementById('step1').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('step1').style.display = 'none';
+            }, 500);
+
+            // 2. Показуємо GIF анімацію літачка
+            const gif = document.getElementById('plane-gif');
+            setTimeout(() => {
+                gif.style.display = 'block';
+            }, 600); // Невелика затримка після зникнення вікна
+
+            // 3. Через 2.5 секунди (час польоту та розгортання в GIF) 
+            // ховаємо GIF і показуємо справжній аркуш з котиком
+            setTimeout(() => {
+                gif.style.display = 'none';
+                document.getElementById('paper-card').classList.add('show-paper');
+            }, 3100); // 600ms затримка + 2500ms анімація
         }
 
         // Функція для сердечок
