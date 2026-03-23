@@ -1,30 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Привіт!</title>
+    <title>Для тебе</title>
     <style>
         body {
-            background-color: pink; /* Рожевий фон сторінки */
+            /* Світло-рожевий фон */
+            background-color: #FFF0F5; 
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden; /* Щоб сердечка не створювали прокрутку */
+            position: relative;
         }
         
+        /* Біле віконце по центру */
         .modal {
-            background-color: white; /* Білий фон віконця */
-            padding: 20px 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background-color: white;
+            padding: 30px 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 10; /* Щоб віконце було поверх сердечок */
             
-            /* Налаштування шрифту */
             font-family: "Times New Roman", Times, serif;
             font-size: 14pt;
-            color: black;
-            
+            color: #333;
             text-align: center;
+        }
+
+        /* Стиль для сердечок */
+        .heart {
+            position: absolute;
+            bottom: -50px;
+            color: #FFB6C1; /* Колір сердечок */
+            font-size: 20px;
+            user-select: none;
+            animation: moveUp 6s linear infinite;
+            opacity: 0.7;
+        }
+
+        /* Анімація підйому вгору */
+        @keyframes moveUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-110vh) rotate(360deg);
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -33,6 +59,33 @@
     <div class="modal">
         Не скучай
     </div>
+
+    <script>
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤'; // Символ сердечка
+            
+            // Випадкова позиція по горизонталі
+            heart.style.left = Math.random() * 100 + "vw";
+            
+            // Випадкова тривалість польоту (від 4 до 8 секунд)
+            heart.style.animationDuration = Math.random() * 3 + 5 + "s";
+            
+            // Випадковий розмір
+            heart.style.fontSize = Math.random() * 15 + 15 + "px";
+            
+            document.body.appendChild(heart);
+            
+            // Видаляємо сердечко після завершення анімації
+            setTimeout(() => {
+                heart.remove();
+            }, 8000);
+        }
+
+        // Створювати нове сердечко кожні 800 мілісекунд
+        setInterval(createHeart, 800);
+    </script>
 
 </body>
 </html>
