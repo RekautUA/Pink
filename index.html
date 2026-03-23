@@ -2,7 +2,8 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Тобі сюрприз!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тобі літачок!</title>
     <style>
         body {
             background-color: #FFC0CB; /* Рожевий фон */
@@ -16,7 +17,7 @@
             font-family: "Times New Roman", Times, serif;
         }
 
-        /* Стиль для віконець */
+        /* Стиль для першого вікна */
         .modal {
             background-color: white;
             padding: 30px;
@@ -24,103 +25,59 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             z-index: 10;
             text-align: center;
-            position: absolute;
+            transition: opacity 0.5s;
         }
 
         .btn-ok {
             margin-top: 15px;
-            padding: 5px 20px;
+            padding: 8px 25px;
             cursor: pointer;
-            background: #FFC0CB;
-            border: 1px solid #d8a4af;
-            border-radius: 5px;
+            background: #FF99AA;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 12pt;
+            font-weight: bold;
+            transition: background 0.3s;
         }
+        .btn-ok:hover { background: #FF7788; }
 
-        /* Листівка, що вилітає з кута */
-        #card {
-            display: none; /* Спочатку схована */
-            bottom: -200px;
-            right: -200px;
-            background: #fff;
-            border: 2px solid #ff0000;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 1s ease-out;
-            z-index: 11;
-        }
-
-        /* Клас для анімації вильоту */
-        .fly-in {
-            display: block !important;
-            bottom: 50px !important;
-            right: 50px !important;
-        }
-
-        /* Котик */
-        #cat-img {
+        /* Паперовий літачок (спочатку схований за межами екрану) */
+        #plane {
             display: none;
-            max-width: 250px;
-            margin-top: 15px;
-            border-radius: 10px;
-        }
-
-        /* Червоні сердечка */
-        .heart {
             position: absolute;
-            bottom: -50px;
-            color: #FF0000;
-            font-size: 20px;
-            user-select: none;
-            animation: moveUp 6s linear infinite;
-            opacity: 0.8;
-            pointer-events: none;
+            font-size: 50px; /* Розмір літачка */
+            color: white;
+            z-index: 20;
+            transform: rotate(0deg);
         }
 
-        @keyframes moveUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0.9; }
-            100% { transform: translateY(-115vh) rotate(360deg); opacity: 0; }
-        }
-    </style>
-</head>
-<body>
-
-    <div id="step1" class="modal">
-        <div style="font-size: 14pt;">Не скучай</div>
-        <button class="btn-ok" onclick="showCard()">ОК</button>
-    </div>
-
-    <div id="card" class="modal" onclick="showCat()">
-        <div style="font-size: 14pt;">Натисни на мене</div>
-        <img id="cat-img" src="https://cataas.com/cat/cute" alt="Котик">
-    </div>
-
-    <script>
-        // Функція для показу листівки
-        function showCard() {
-            document.getElementById('step1').style.display = 'none';
-            const card = document.getElementById('card');
-            card.classList.add('fly-in');
+        /* Клас для анімації польоту літачка */
+        .fly-animation {
+            display: block !important;
+            animation: flyIn 2.5s ease-out forwards;
         }
 
-        // Функція для показу котика
-        function showCat() {
-            document.getElementById('cat-img').style.display = 'block';
-            document.querySelector('#card div').innerText = 'Мур!';
-        }
-
-        // Генерація сердечок
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤'; 
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = Math.random() * 3 + 4 + "s";
-            heart.style.fontSize = Math.random() * 15 + 15 + "px";
-            document.body.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 7000);
-        }
-        setInterval(createHeart, 600);
-    </script>
-
-</body>
-</html>
+        /* Анімація польоту з кута в центр + перетворення */
+        @keyframes flyIn {
+            0% {
+                bottom: -100px;
+                right: -100px;
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            70% {
+                /* Долітає до центру */
+                bottom: calc(50% - 25px);
+                right: calc(50% - 25px);
+                transform: scale(1) rotate(-45deg);
+                opacity: 1;
+            }
+            85% {
+                /* Починає "розгортатися" (крутитися і збільшуватися) */
+                bottom: calc(50% - 25px);
+                right: calc(50% - 25px);
+                transform: scale(2) rotate(180deg);
+                opacity: 0.5;
+            }
+            10
